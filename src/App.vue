@@ -12,41 +12,54 @@
 
     <div class="container">
       <ais-instant-search
-        :search-client="searchClient"
-        index-name="products"
+          :search-client="searchClient"
+          index-name="products"
       >
-        <div class="search-panel">
-          <div class="search-panel__filters">
+        <ais-index index-name="by-monthly-price">
+          <div class="search-panel">
             <div class="search-panel__filters">
-              <p>Collections</p>
-              <ais-refinement-list attribute="attributes.collection" not_searchable />
+              <div class="search-panel__filters">
+                <p>Collections</p>
+                <ais-refinement-list attribute="attributes.collection" not_searchable/>
+              </div>
+              <div>
+                <p>Categories</p>
+                <ais-refinement-list attribute="product_categories" not_searchable/>
+              </div>
+              <div>
+                <p>Monthly price</p>
+                <ais-range-input attribute="pricing.monthly_price"/>
+              </div>
+              <div>
+                <p>Ratings</p>
+                <ais-rating-menu attribute="attributes.rating.stars"/>
+              </div>
             </div>
-            <div>
-              <p>Categories</p>
-              <ais-refinement-list attribute="product_categories" not_searchable />
-            </div>
-            <div>
-              <p>Monthly price</p>
-              <ais-range-input attribute="pricing.monthly_price" />
-            </div>
-            <div>
-              <p>Ratings</p>
-              <ais-rating-menu attribute="attributes.rating.stars" />
+
+            <div class="search-panel__results">
+              <ais-search-box placeholder="Search here…" class="searchbox"/>
+              <ais-infinite-hits>
+                <template slot="item" slot-scope="{ item }">
+                  <h1><a :href="item.url">
+                    <ais-highlight :hit="item" attribute="name"/>
+                  </a></h1>
+                  <img :src="item.default_thumbnail"/>
+                  <p>
+                    <span>Monthly price: </span>
+                    <ais-highlight :hit="item" attribute="monthly_price"/>
+                  </p>
+                  <p>
+                    <ais-highlight :hit="item" attribute="description"/>
+                  </p>
+                </template>
+              </ais-infinite-hits>
+
+              <div class="pagination">
+                <ais-pagination/>
+              </div>
             </div>
           </div>
-
-          <div class="search-panel__results">
-            <ais-search-box placeholder="Search here…" class="searchbox" />
-            <ais-infinite-hits>
-              <template slot="item" slot-scope="{ item }">
-                <h1><a :href="item.url"><ais-highlight :hit="item" attribute="name" /></a></h1>
-                <p><ais-highlight :hit="item" attribute="description" /></p>
-              </template>
-            </ais-infinite-hits>
-
-            <div class="pagination"><ais-pagination /></div>
-          </div>
-        </div>
+        </ais-index>
       </ais-instant-search>
     </div>
   </div>
@@ -60,8 +73,8 @@ export default {
   data() {
     return {
       searchClient: algoliasearch(
-        'A8SGWMDCFY',
-        'eb5df253ecb2f26cb02d394226e316bc'
+          'A8SGWMDCFY',
+          'eb5df253ecb2f26cb02d394226e316bc'
       ),
     };
   },
@@ -77,7 +90,7 @@ h1 {
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
-    Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
 }
 
 .header {
