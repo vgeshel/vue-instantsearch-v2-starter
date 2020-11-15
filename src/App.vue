@@ -13,21 +13,36 @@
     <div class="container">
       <ais-instant-search
         :search-client="searchClient"
-        index-name="demo_ecommerce"
+        index-name="products"
       >
         <div class="search-panel">
           <div class="search-panel__filters">
-            <ais-refinement-list attribute="categories" searchable />
+            <div class="search-panel__filters">
+              <p>Collections</p>
+              <ais-refinement-list attribute="attributes.collection" not_searchable />
+            </div>
+            <div>
+              <p>Categories</p>
+              <ais-refinement-list attribute="product_categories" not_searchable />
+            </div>
+            <div>
+              <p>Monthly price</p>
+              <ais-range-input attribute="pricing.monthly_price" />
+            </div>
+            <div>
+              <p>Ratings</p>
+              <ais-rating-menu attribute="attributes.rating.stars" />
+            </div>
           </div>
 
           <div class="search-panel__results">
             <ais-search-box placeholder="Search here…" class="searchbox" />
-            <ais-hits>
+            <ais-infinite-hits>
               <template slot="item" slot-scope="{ item }">
-                <h1><ais-highlight :hit="item" attribute="name" /></h1>
+                <h1><a :href="item.url"><ais-highlight :hit="item" attribute="name" /></a></h1>
                 <p><ais-highlight :hit="item" attribute="description" /></p>
               </template>
-            </ais-hits>
+            </ais-infinite-hits>
 
             <div class="pagination"><ais-pagination /></div>
           </div>
@@ -45,8 +60,8 @@ export default {
   data() {
     return {
       searchClient: algoliasearch(
-        'B1G2GM9NG0',
-        'aadef574be1f9252bb48d4ea09b5cfe5'
+        'A8SGWMDCFY',
+        'eb5df253ecb2f26cb02d394226e316bc'
       ),
     };
   },
